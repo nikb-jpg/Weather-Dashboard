@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Weather Dashboard</title>
+    <!-- Include Tailwind CSS via CDN -->
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <!-- Include Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .loading { opacity: 0.5; pointer-events: none; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 p-6">
+
+    <div class="container mx-auto px-4 max-w-6xl">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold text-blue-600">Global Weather Monitor</h1>
+            <p class="text-gray-500 text-sm mt-2 md:mt-0" id="current-date">Loading date...</p>
+        </div>
+
+        <!-- Grid Layout -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <!-- Card: Luxembourg -->
+            <div class="bg-white shadow-xl rounded-xl overflow-hidden border border-gray-100" id="card-luxembourg">
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-1">Luxembourg</h2>
+                    <p class="text-xs text-gray-400 mb-4">Luxembourg City</p>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <img id="icon-luxembourg" src="" alt="icon" class="w-10 h-10 mr-3">
+                            <span class="text-4xl font-bold text-gray-800" id="temp-luxembourg">--°</span>
+                        </div>
+                    </div>
+                    <p class="text-blue-500 font-medium mb-6 capitalize" id="cond-luxembourg">Loading...</p>
+                    
+                    <div class="border-t border-gray-100 pt-4">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">7-Day Forecast</h3>
+                        <ul class="space-y-2 text-sm" id="forecast-luxembourg">
+                            <!-- Forecast items injected via JS -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Zurich -->
+            <div class="bg-white shadow-xl rounded-xl overflow-hidden border border-gray-100" id="card-zurich">
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-1">Zurich</h2>
+                    <p class="text-xs text-gray-400 mb-4">Switzerland</p>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <img id="icon-zurich" src="" alt="icon" class="w-10 h-10 mr-3">
+                            <span class="text-4xl font-bold text-gray-800" id="temp-zurich">--°</span>
+                        </div>
+                    </div>
+                    <p class="text-blue-500 font-medium mb-6 capitalize" id="cond-zurich">Loading...</p>
+                    
+                    <div class="border-t border-gray-100 pt-4">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">7-Day Forecast</h3>
+                        <ul class="space-y-2 text-sm" id="forecast-zurich"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Rhodes -->
+            <div class="bg-white shadow-xl rounded-xl overflow-hidden border border-gray-100" id="card-rodos">
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-1">Rhodes</h2>
+                    <p class="text-xs text-gray-400 mb-4">Greece</p>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <img id="icon-rodos" src="" alt="icon" class="w-10 h-10 mr-3">
+                            <span class="text-4xl font-bold text-gray-800" id="temp-rodos">--°</span>
+                        </div>
+                    </div>
+                    <p class="text-blue-500 font-medium mb-6 capitalize" id="cond-rodos">Loading...</p>
+                    
+                    <div class="border-t border-gray-100 pt-4">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">7-Day Forecast</h3>
+                        <ul class="space-y-2 text-sm" id="forecast-rodos"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card: Philippines -->
+            <div class="bg-white shadow-xl rounded-xl overflow-hidden border border-gray-100" id="card-philippines">
+                <div class="p-6">
+                    <h2 class="text-xl font-bold text-gray-800 mb-1">Philippines</h2>
+                    <p class="text-xs text-gray-400 mb-4">Manila / Bicol</p>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center">
+                            <img id="icon-philippines" src="" alt="icon" class="w-10 h-10 mr-3">
+                            <span class="text-4xl font-bold text-gray-800" id="temp-philippines">--°</span>
+                        </div>
+                    </div>
+                    <p class="text-blue-500 font-medium mb-6 capitalize" id="cond-philippines">Loading...</p>
+                    
+                    <div class="border-t border-gray-100 pt-4">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">7-Day Forecast</h3>
+                        <ul class="space-y-2 text-sm" id="forecast-philippines"></ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="text-center mt-10 text-gray-400 text-sm">
+            Data provided by Open-Meteo (No API Key Required)
+        </div>
+    </div>
+
+    <script>
+        // 1. CONFIGURATION: Coordinates for the cities
+        const LOCATIONS = {
+            luxembourg: { lat: 49.6116, lon: 6.1319 },
+            zurich:     { lat: 47.3769, lon: 8.5417 },
+            rodos:      { lat: 36.4408, lon: 28.2225 },
+            philippines:{ lat: 14.5995, lon: 120.9842 } // Manila
+        };
+
+        // 2. HELPER: Convert WMO Weather Codes to Text & Icon Names
+        function getWeatherDetails(code) {
+            // Codes based on WMO standards
+            if (code === 0) return { text: "Clear Sky", icon: "sun" };
+            if (code >= 1 && code <= 3) return { text: "Partly Cloudy", icon: "cloud-sun" };
+            if (code >= 45 && code <= 48) return { text: "Fog", icon: "cloud-fog" };
+            if (code >= 51 && code <= 67) return { text: "Rain", icon: "cloud-rain" };
+            if (code >= 71 && code <= 77) return { text: "Snow", icon: "snowflake" };
+            if (code >= 80 && code <= 82) return { text: "Heavy Rain", icon: "cloud-drizzle" };
+            if (code >= 95) return { text: "Thunderstorm", icon: "cloud-lightning" };
+            return { text: "Overcast", icon: "cloud" };
+        }
+
+        // 3. HELPER: Format Date (e.g., "Mon 17")
+        function getDayName(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' });
+        }
+
+        // 4. MAIN FUNCTION: Fetch data
+        async function fetchWeather(cityId, lat, lon) {
+            try {
+                // Open-Meteo URL (Free, No Key)
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`;
+                
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("Weather data unavailable");
+                const data = await response.json();
+
+                // --- Update Current Weather ---
+                const current = data.current;
+                const details = getWeatherDetails(current.weather_code);
+                
+                document.getElementById(`temp-${cityId}`).textContent = Math.round(current.temperature_2m) + "°C";
+                document.getElementById(`cond-${cityId}`).textContent = details.text;
+                // Use Lucide static icons
+                document.getElementById(`icon-${cityId}`).src = `https://unpkg.com/lucide-static@latest/icons/${details.icon}.svg`;
+
+                // --- Update Forecast Loop ---
+                const forecastList = document.getElementById(`forecast-${cityId}`);
+                forecastList.innerHTML = ""; // Clear loader
+
+                // Loop through 7 days
+                for(let i = 1; i < 8; i++) { // Start at 1 to skip today, or 0 to include today
+                    if(!data.daily.time[i]) break;
+
+                    const dayDate = data.daily.time[i];
+                    const maxTemp = Math.round(data.daily.temperature_2m_max[i]);
+                    const minTemp = Math.round(data.daily.temperature_2m_min[i]);
+                    const weatherCode = data.daily.weather_code[i];
+                    const dayDetails = getWeatherDetails(weatherCode);
+
+                    const li = document.createElement("li");
+                    li.className = "flex justify-between items-center py-1 border-b border-gray-50 last:border-0";
+                    li.innerHTML = `
+                        <span class="w-16 font-semibold text-gray-500">${getDayName(dayDate)}</span>
+                        <div class="flex items-center flex-1 justify-center">
+                            <img src="https://unpkg.com/lucide-static@latest/icons/${dayDetails.icon}.svg" class="w-4 h-4 text-gray-400 mr-2 opacity-60">
+                            <span class="text-xs text-gray-400">${dayDetails.text}</span>
+                        </div>
+                        <span class="w-16 text-right font-medium text-gray-700">${maxTemp}° / ${minTemp}°</span>
+                    `;
+                    forecastList.appendChild(li);
+                }
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById(`cond-${cityId}`).textContent = "Error loading data";
+            }
+        }
+
+        // 5. INITIALIZE
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set current date in header
+            const now = new Date();
+            document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+            // Loop through locations and fetch data
+            for (const [key, coords] of Object.entries(LOCATIONS)) {
+                fetchWeather(key, coords.lat, coords.lon);
+            }
+        });
+
+    </script>
+</body>
+</html>
