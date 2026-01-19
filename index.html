@@ -30,13 +30,13 @@
         .card-hover:hover { transform: translateY(-5px); transition: all 0.3s ease; }
         .card-hover:hover .kid-portrait { transform: scale(1.1); }
         
-        /* Sprite Positions */
+        /* Sprite Horizontal Positioning */
         .pos-luxembourg { background-position-x: 0%; }
         .pos-switzerland { background-position-x: 33.33%; }
         .pos-greece      { background-position-x: 66.66%; }
         .pos-philippines { background-position-x: 100%; }
 
-        /* Final Color Choices */
+        /* Your Chosen Color Palette */
         .bg-greece      { background-color: #e0f2fe; border: 1px solid #bae6fd; } /* Sky Blue */
         .bg-switzerland { background-color: #d6b99a; border: 1px solid #c9a68a; } /* Moaly Utacier */
         .bg-luxembourg  { background-color: #fff1f2; border: 1px solid #fecdd3; } /* Soft Pink */
@@ -55,10 +55,11 @@
                 <h1 class="text-4xl font-bold text-orange-600 tracking-tight">Family World Weather ☀️</h1>
                 <p class="text-gray-500 font-medium italic">"Every day is a gift for a wonderful Mom"</p>
             </div>
-            <div id="current-date" class="mt-4 md:mt-0 px-5 py-2 bg-white/60 rounded-full shadow-sm text-orange-700 font-bold border border-orange-100"></div>
+            <div id="date-display" class="mt-4 md:mt-0 px-5 py-2 bg-white/60 rounded-full shadow-sm text-orange-700 font-bold border border-orange-100"></div>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="weather-grid"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="weather-grid">
+            </div>
         
         <footer class="text-center mt-12 text-gray-400 text-sm font-medium italic">
             "Wherever you go, no matter what the weather, always bring your own sunshine."
@@ -66,13 +67,6 @@
     </div>
 
     <script>
-        const LOCATIONS = {
-            rodos: { name: "Greece", flag: "GR", word: "Kalimera", posClass: "pos-greece", colorClass: "bg-greece", lat: 36.4408, lon: 28.2225 },
-            zurich: { name: "Switzerland", flag: "CH", word: "Grüezi", posClass: "pos-switzerland", colorClass: "bg-switzerland", lat: 47.3769, lon: 8.5417 },
-            luxembourg: { name: "Luxembourg", flag: "LU", word: "Moien", posClass: "pos-luxembourg", colorClass: "bg-luxembourg", lat: 49.6116, lon: 6.1319 },
-            philippines: { name: "Philippines", flag: "PH", word: "Mabuhay", posClass: "pos-philippines", colorClass: "bg-philippines", lat: 14.5995, lon: 120.9842 }
-        };
-
-        function getWeatherDetails(code) {
-            if (code === 0) return { text: "Beautiful Sun", icon: "sun", color: "text-orange-500" };
-            if (code >= 1 && code <= 3) return { text: "Partly Cloudy", icon: "cloud-sun", color: "text-blue-400
+        // Data set exactly as requested
+        const locations = [
+            { id: "GR", name: "Greece", word: "Kalimera", lat: 36.44, lon: 28.22,
