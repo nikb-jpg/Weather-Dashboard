@@ -66,7 +66,6 @@
     </div>
 
     <script>
-        // Data for each location
         const LOCATIONS = {
             luxembourg: { name: "Luxembourg", flag: "🇱🇺", word: "Moien", posClass: "pos-luxembourg", colorClass: "bg-luxembourg", lat: 49.6116, lon: 6.1319 },
             zurich: { name: "Switzerland", flag: "🇨🇭", word: "Grüezi", posClass: "pos-switzerland", colorClass: "bg-switzerland", lat: 47.3769, lon: 8.5417 },
@@ -83,4 +82,43 @@
 
         async function fetchWeather(id, loc) {
             try {
-                const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto
+                const url = "https://api.open-meteo.com/v1/forecast?latitude=" + loc.lat + "&longitude=" + loc.lon + "&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto";
+                const response = await fetch(url);
+                const data = await response.json();
+                const details = getWeatherDetails(data.current.weather_code);
+
+                const card = document.createElement('div');
+                const isSwiss = loc.colorClass === 'bg-switzerland';
+                const textCol = isSwiss ? 'text-white' : 'text-gray-800';
+                const accentCol = isSwiss ? 'text-white/90' : 'text-orange-500';
+
+                card.className = "card-base shadow-xl p-6 card-hover flex flex-col items-center text-center " + loc.colorClass;
+                card.innerHTML = '<div class="mb-4"><div class="kid-portrait ' + loc.posClass + '"></div></div>' +
+                    '<h2 class="text-2xl font-bold ' + textCol + ' flex items-center gap-2"><span>' + loc.flag + '</span> ' + loc.name + '</h2>' +
+                    '<p class="' + accentCol + ' font-bold text-sm mb-4 italic">(' + loc.word + '!)</p>' +
+                    '<div class="flex items-center justify-center gap-3 mb-2">' +
+                        '<img src="https://unpkg.com/lucide-static@latest/icons/' + details.icon + '.svg" class="w-10 h-10 opacity-70 ' + (isSwiss ? 'invert brightness-200' : '') + '">' +
+                        '<span class="text-5xl font-black ' + textCol + '">' + Math.round(data.current.temperature_2m) + '°C</span>' +
+                    '</div>' +
+                    '<p class="' + (isSwiss ? 'text-white' : details.color) + ' font-bold mb-6">' + details.text + '</p>' +
+                    '<div class="w-full border-t border-black/5 pt-4 text-sm font-medium ' + (isSwiss ? 'text-white/80' : 'text-gray-600') + '">' +
+                        '<div class="flex justify-between px-4">' +
+                            '<span>Today: ' + Math.round(data.daily.temperature_2m_max[0]) + '°</span>' +
+                            '<span>Tomorrow: ' + Math.round(data.daily.temperature_2m_max[1]) + '°</span>' +
+                        '</div>' +
+                    '</div>';
+                document.getElementById('weather-grid').appendChild(card);
+            } catch (e) { 
+                console.error("Error loading weather for " + loc.name, e); 
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+            for (const key in LOCATIONS) {
+                fetchWeather(key, LOCATIONS[key]);
+            }
+        });
+    </script>
+</body>
+</html>
