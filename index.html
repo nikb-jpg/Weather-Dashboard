@@ -36,10 +36,10 @@
         .pos-greece      { background-position-x: 66.66%; }
         .pos-philippines { background-position-x: 100%; }
 
-        /* Your Chosen Color Palette */
-        .bg-greece      { background-color: #e0f2fe; border: 1px solid #bae6fd; } /* Sky Blue */
+        /* Final Color Choices */
+        .bg-greece      { background-color: #e0f2fe; border: 1px solid #bae6fd; } /* Baby Sky Blue */
         .bg-switzerland { background-color: #d6b99a; border: 1px solid #c9a68a; } /* Moaly Utacier */
-        .bg-luxembourg  { background-color: #fff1f2; border: 1px solid #fecdd3; } /* Soft Pink */
+        .bg-luxembourg  { background-color: #fff1f2; border: 1px solid #fecdd3; } /* Soft Baby Pink */
         .bg-philippines { background-color: #f3e8ff; border: 1px solid #e9d5ff; } /* Soft Purple */
 
         .card-base {
@@ -58,8 +58,7 @@
             <div id="date-display" class="mt-4 md:mt-0 px-5 py-2 bg-white/60 rounded-full shadow-sm text-orange-700 font-bold border border-orange-100"></div>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="weather-grid">
-            </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="weather-grid"></div>
         
         <footer class="text-center mt-12 text-gray-400 text-sm font-medium italic">
             "Wherever you go, no matter what the weather, always bring your own sunshine."
@@ -67,6 +66,13 @@
     </div>
 
     <script>
-        // Data set exactly as requested
-        const locations = [
-            { id: "GR", name: "Greece", word: "Kalimera", lat: 36.44, lon: 28.22,
+        // High-stability data set
+        var locations = [
+            { id: "GR", name: "Greece", word: "Kalimera", lat: 36.44, lon: 28.22, pos: "pos-greece", bg: "bg-greece" },
+            { id: "CH", name: "Switzerland", word: "Grüezi", lat: 47.37, lon: 8.54, pos: "pos-switzerland", bg: "bg-switzerland" },
+            { id: "LU", name: "Luxembourg", word: "Moien", lat: 49.61, lon: 6.13, pos: "pos-luxembourg", bg: "bg-luxembourg" },
+            { id: "PH", name: "Philippines", word: "Mabuhay", lat: 14.59, lon: 120.98, pos: "pos-philippines", bg: "bg-philippines" }
+        ];
+
+        function getCondition(code) {
+            if
