@@ -30,14 +30,43 @@
         .card-hover:hover { transform: translateY(-5px); transition: all 0.3s ease; }
         .card-hover:hover .kid-portrait { transform: scale(1.1); }
         
-        /* Sprite Positions */
         .pos-luxembourg { background-position-x: 0%; }
         .pos-switzerland { background-position-x: 33.33%; }
         .pos-greece      { background-position-x: 66.66%; }
         .pos-philippines { background-position-x: 100%; }
 
-        /* Country Colors - Switzerland updated to Boria Besply */
-        .bg-luxembourg  { background-color: rgba(255, 241, 242, 0.9); border: 1px solid #fecdd3; } /* Baby Pink */
+        /* Country Colors */
+        .bg-luxembourg  { background-color: rgba(255, 241, 242, 0.9); border: 1px solid #fecdd3; }
+        /* Switzerland updated to the exact Boria Besply tone */
+        .bg-switzerland { background-color: rgba(206, 161, 154, 0.95); border: 1px solid #b58d86; } 
+        .bg-greece      { background-color: rgba(240, 249, 255, 0.9); border: 1px solid #bae6fd; }
+        .bg-philippines { background-color: rgba(255, 255, 237, 0.9); border: 1px solid #fef08a; }
+
+        .card-base {
+            backdrop-filter: blur(8px);
+            border-radius: 2rem;
+        }
+    </style>
+</head>
+<body class="p-6">
+    <div class="container mx-auto px-4 max-w-6xl">
+        <header class="flex flex-col md:flex-row justify-between items-center mb-10 text-center md:text-left">
+            <div>
+                <h1 class="text-4xl font-bold text-orange-600 tracking-tight">Family World Weather ☀️</h1>
+                <p class="text-gray-500 font-medium italic">"Every day is a gift for a wonderful Mom"</p>
+            </div>
+            <div id="current-date" class="mt-4 md:mt-0 px-5 py-2 bg-white/60 rounded-full shadow-sm text-orange-700 font-bold border border-orange-100"></div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="weather-grid"></div>
         
-        /* Boria Besply for Switzerland: Muted Dusty Rose */
-        .bg-switzerland { background-color: rgba(206, 161, 154, 0.95); border: 1px solid #b58d86; color: white; }
+        <footer class="text-center mt-12 text-gray-400 text-sm font-medium italic">
+            "Wherever you go, no matter what the weather, always bring your own sunshine."
+        </footer>
+    </div>
+
+    <script>
+        const LOCATIONS = {
+            luxembourg: { name: "Luxembourg", flag: "🇱🇺", word: "Moien", posClass: "pos-luxembourg", colorClass: "bg-luxembourg", lat: 49.6116, lon: 6.1319 },
+            zurich: { name: "Switzerland", flag: "🇨🇭", word: "Grüezi", posClass: "pos-switzerland", colorClass: "bg-switzerland", lat: 47.3769, lon: 8.5417 },
+            rodos: { name: "Greece", flag: "🇬🇷", word: "Kalimera", posClass: "pos-greece", colorClass: "bg-greece", lat: 36.4408, lon:
