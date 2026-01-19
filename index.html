@@ -16,35 +16,72 @@
             box-shadow: 0 10px 15px rgba(0,0,0,0.1);
             background-position-y: 10%;
         }
-        /* Positions */
+        /* Specific Face Positions */
         .pos-lu { background-position-x: 0%; }
         .pos-ch { background-position-x: 33.33%; }
         .pos-gr { background-position-x: 66.66%; }
         .pos-ph { background-position-x: 100%; }
 
-        /* Colors of your choice */
+        /* Your Requested Colors */
         .c-gr { background-color: #e0f2fe; border: 1px solid #bae6fd; } /* Sky Blue */
         .c-ch { background-color: #d6b99a; border: 1px solid #c9a68a; } /* Moaly Utacier */
         .c-lu { background-color: #fff1f2; border: 1px solid #fecdd3; } /* Baby Pink */
-        .c-ph { background-color: #f3e8ff; border: 1px solid #e9d5ff; } /* Purple */
+        .c-ph { background-color: #f3e8ff; border: 1px solid #e9d5ff; } /* Soft Purple */
 
-        .card-base { border-radius: 2rem; padding: 24px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); transition: transform 0.3s; }
-        .card-base:hover { transform: translateY(-5px); }
+        .card-base { border-radius: 2rem; padding: 24px; text-align: center; box-shadow: 0 15px 20px rgba(0,0,0,0.05); }
     </style>
 </head>
 <body>
     <div style="max-width: 1100px; margin: 0 auto;">
-        <div style="margin-bottom: 40px;">
+        <div style="margin-bottom: 30px;">
             <h1 style="color: #ea580c; font-size: 32px; font-weight: 800; margin: 0;">Family World Weather ☀️</h1>
             <p style="color: #6b7280; font-weight: 500;">Every day is a gift for a wonderful Mom</p>
             <div id="date-display" style="color: #c2410c; font-weight: 700; margin-top: 10px;"></div>
         </div>
 
-        <div id="weather-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 30px;">
+        <div id="weather-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px;">
             </div>
     </div>
 
     <script>
+        // Data for the 4 locations
         var locations = [
             { id: "GR", name: "Greece", word: "Kalimera", lat: 36.44, lon: 28.22, pos: "pos-gr", bg: "c-gr" },
-            { id: "CH", name: "Switzerland", word: "Grüezi", lat: 47.37, lon: 8.54, pos: "
+            { id: "CH", name: "Switzerland", word: "Grüezi", lat: 47.37, lon: 8.54, pos: "pos-ch", bg: "c-ch" },
+            { id: "LU", name: "Luxembourg", word: "Moien", lat: 49.61, lon: 6.13, pos: "pos-lu", bg: "c-lu" },
+            { id: "PH", name: "Philippines", word: "Mabuhay", lat: 14.59, lon: 120.98, pos: "pos-ph", bg: "c-ph" }
+        ];
+
+        function startDashboard() {
+            // Set the current date
+            document.getElementById('date-display').innerText = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+            
+            var grid = document.getElementById('weather-grid');
+            
+            // Fetch weather for each one-by-one for stability
+            locations.forEach(function(loc) {
+                var url = "https://api.open-meteo.com/v1/forecast?latitude=" + loc.lat + "&longitude=" + loc.lon + "&current=temperature_2m&daily=temperature_2m_max&timezone=auto";
+                
+                fetch(url).then(function(res) { return res.json(); }).then(function(data) {
+                    var card = document.createElement('div');
+                    card.className = "card-base " + loc.bg;
+                    
+                    var html = '<div style="margin-bottom: 15px;"><div class="kid-portrait ' + loc.pos + '"></div></div>';
+                    html += '<h2 style="font-size: 22px; font-weight: 700; color: #1f2937; margin: 0;">' + loc.name + '</h2>';
+                    html += '<p style="color: #ea580c; font-weight: 700; font-style: italic; margin: 5px 0 15px 0;">(' + loc.word + '!)</p>';
+                    html += '<div style="font-size: 44px; font-weight: 900; color: #111827;">' + Math.round(data.current.temperature_2m) + '°C</div>';
+                    html += '<div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; font-size: 11px; font-weight: 700; color: #6b7280;">';
+                    html += '<span>Today: ' + Math.round(data.daily.temperature_2m_max[0]) + '°</span>';
+                    html += '<span>Tomorrow: ' + Math.round(data.daily.temperature_2m_max[1]) + '°</span></div>';
+                    
+                    card.innerHTML = html;
+                    grid.appendChild(card);
+                }).catch(function(err) { console.log("Error loading " + loc.name); });
+            });
+        }
+        
+        // Run the script immediately
+        startDashboard();
+    </script>
+</body>
+</html>
