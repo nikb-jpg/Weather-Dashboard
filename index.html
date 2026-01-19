@@ -30,17 +30,17 @@
         .card-hover:hover { transform: translateY(-5px); transition: all 0.3s ease; }
         .card-hover:hover .kid-portrait { transform: scale(1.1); }
         
-        /* Sprite Horizontal Positioning */
+        /* Sprite Positions */
         .pos-luxembourg { background-position-x: 0%; }
         .pos-switzerland { background-position-x: 33.33%; }
         .pos-greece      { background-position-x: 66.66%; }
         .pos-philippines { background-position-x: 100%; }
 
-        /* Final Color Choices with Purple for Philippines */
-        .bg-greece      { background-color: #e0f2fe; border: 1px solid #bae6fd; }
-        .bg-switzerland { background-color: #d6b99a; border: 1px solid #c9a68a; }
-        .bg-luxembourg  { background-color: #fff1f2; border: 1px solid #fecdd3; }
-        .bg-philippines { background-color: #f3e8ff; border: 1px solid #e9d5ff; }
+        /* Final Color Choices */
+        .bg-greece      { background-color: #e0f2fe; border: 1px solid #bae6fd; } /* Sky Blue */
+        .bg-switzerland { background-color: #d6b99a; border: 1px solid #c9a68a; } /* Moaly Utacier */
+        .bg-luxembourg  { background-color: #fff1f2; border: 1px solid #fecdd3; } /* Soft Pink */
+        .bg-philippines { background-color: #f3e8ff; border: 1px solid #e9d5ff; } /* Soft Purple */
 
         .card-base {
             backdrop-filter: blur(8px);
@@ -70,4 +70,9 @@
             rodos: { name: "Greece", flag: "GR", word: "Kalimera", posClass: "pos-greece", colorClass: "bg-greece", lat: 36.4408, lon: 28.2225 },
             zurich: { name: "Switzerland", flag: "CH", word: "Grüezi", posClass: "pos-switzerland", colorClass: "bg-switzerland", lat: 47.3769, lon: 8.5417 },
             luxembourg: { name: "Luxembourg", flag: "LU", word: "Moien", posClass: "pos-luxembourg", colorClass: "bg-luxembourg", lat: 49.6116, lon: 6.1319 },
-            philippines: { name: "Philippines", flag: "PH", word: "Mabuhay", posClass: "pos-philippines", colorClass: "bg-philippines", lat: 14.5995, lon: 120
+            philippines: { name: "Philippines", flag: "PH", word: "Mabuhay", posClass: "pos-philippines", colorClass: "bg-philippines", lat: 14.5995, lon: 120.9842 }
+        };
+
+        function getWeatherDetails(code) {
+            if (code === 0) return { text: "Beautiful Sun", icon: "sun", color: "text-orange-500" };
+            if (code >= 1 && code <= 3) return { text: "Partly Cloudy", icon: "cloud-sun", color: "text-blue-400
