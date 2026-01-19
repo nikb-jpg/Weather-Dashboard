@@ -30,14 +30,14 @@
         .card-hover:hover { transform: translateY(-5px); transition: all 0.3s ease; }
         .card-hover:hover .kid-portrait { transform: scale(1.1); }
         
+        /* Sprite Positions */
         .pos-luxembourg { background-position-x: 0%; }
         .pos-switzerland { background-position-x: 33.33%; }
         .pos-greece      { background-position-x: 66.66%; }
         .pos-philippines { background-position-x: 100%; }
 
-        /* Country Colors */
+        /* Country Colors - Switzerland is Boria Besply */
         .bg-luxembourg  { background-color: rgba(255, 241, 242, 0.9); border: 1px solid #fecdd3; }
-        /* Switzerland updated to the exact Boria Besply tone */
         .bg-switzerland { background-color: rgba(206, 161, 154, 0.95); border: 1px solid #b58d86; } 
         .bg-greece      { background-color: rgba(240, 249, 255, 0.9); border: 1px solid #bae6fd; }
         .bg-philippines { background-color: rgba(255, 255, 237, 0.9); border: 1px solid #fef08a; }
@@ -66,7 +66,21 @@
     </div>
 
     <script>
+        // Data for each location
         const LOCATIONS = {
             luxembourg: { name: "Luxembourg", flag: "🇱🇺", word: "Moien", posClass: "pos-luxembourg", colorClass: "bg-luxembourg", lat: 49.6116, lon: 6.1319 },
             zurich: { name: "Switzerland", flag: "🇨🇭", word: "Grüezi", posClass: "pos-switzerland", colorClass: "bg-switzerland", lat: 47.3769, lon: 8.5417 },
-            rodos: { name: "Greece", flag: "🇬🇷", word: "Kalimera", posClass: "pos-greece", colorClass: "bg-greece", lat: 36.4408, lon:
+            rodos: { name: "Greece", flag: "🇬🇷", word: "Kalimera", posClass: "pos-greece", colorClass: "bg-greece", lat: 36.4408, lon: 28.2225 },
+            philippines: { name: "Philippines", flag: "🇵🇭", word: "Mabuhay", posClass: "pos-philippines", colorClass: "bg-philippines", lat: 14.5995, lon: 120.9842 }
+        };
+
+        function getWeatherDetails(code) {
+            if (code === 0) return { text: "Beautiful Sun", icon: "sun", color: "text-orange-500" };
+            if (code >= 1 && code <= 3) return { text: "Partly Cloudy", icon: "cloud-sun", color: "text-blue-400" };
+            if (code >= 51 && code <= 67) return { text: "Gentle Rain", icon: "cloud-rain", color: "text-indigo-400" };
+            return { text: "Cloudy Day", icon: "cloud", color: "text-gray-400" };
+        }
+
+        async function fetchWeather(id, loc) {
+            try {
+                const url = `https://api.open-meteo.com/v1/forecast?latitude=${loc.lat}&longitude=${loc.lon}&current=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto
